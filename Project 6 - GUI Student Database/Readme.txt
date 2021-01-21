@@ -31,7 +31,3 @@ Database functionality:
 
  	Info of all students:
 		- Shows info of all students.
-		
-	Exit the program: 
-		- Exit the program. 
-	
