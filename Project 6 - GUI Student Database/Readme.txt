@@ -1,4 +1,4 @@
-* Check the video in this folder to see the application running. 
+* Check/download the video in this folder to see the application running. 
 
 Goals for this program: 
 
