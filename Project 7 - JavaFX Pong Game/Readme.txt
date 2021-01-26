@@ -1,3 +1,5 @@
+*Check the screenshots folder for screenshots of the game.
+
 Goals for this program:
 
 Making a Pong game in JavaFX:
