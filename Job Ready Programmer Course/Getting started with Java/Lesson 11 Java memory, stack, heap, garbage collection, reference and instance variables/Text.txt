@@ -1,0 +1,67 @@
+What code is doing the work in a Java application?
+
+	- Methods do all the work in a java application.
+
+What happens when you press the run button of your application?
+	
+	- Two memory locations are going to be reserved for your java application.
+	- One area is referred as the "stack".
+	- One other area is referred as the "heap".
+
+-----
+	
+Stack:
+	
+	Main method:
+		- The first method that is going to me invoked is the main method. 
+		- In the stack, a frame is going to be created. Which is basically a memory area in the stack. 
+		- If a local variable is declared in the main method. Memory will be reserved in the main method frame.  
+		- IMPORTANT: in this case local variables are for example string, integer, but also their value.
+	
+	Next other method:
+		- If there is another method in the main method. Another frame is created. This frame is placed on top of the main method frame. 
+		- If there are local variables too, memory will be reserved in the frame of the other method.
+	
+	Next other method:
+		- If in this other method is another method. Again, another frame will be created and memory for local variables will be 
+		reserved there. 
+	
+	Both "other" methods are completed:
+		- The memory frames are deleted and we are back at only the main method memory frame. 
+	
+	When the application is done running:
+		- The memory frame for the main method in the stack will also be gone. 
+
+-----
+		
+Heap:
+	
+	When an object is created:
+		- When an object is created, for example: Car myCar = new Car(); What gets assigned to the variable myCar
+		is not the actual object, but the memory address of Car which is stored in the heap.
+		- If we do this again myCar = new Car(); another object is created in the heap. The memory address for 
+		myCar changed to the new object. 
+		
+-----		
+		
+Garbage collection:
+		- The first car object  in the heap now doesn't belong to anything anymore. This is where the garbage collection comes in. 
+		- The garbage collection is placed in the heap and is looking for objects that are not of use anymore. If it finds one, it deletes the object.
+		- In short, the garbage collection makes sure to free space. 
+		
+Reference variable:
+		- For example an object variable: This is called a reference variable because it references to the memory location of the actual object. 	
+		- This reference variable is stored in the stack. 
+		
+Instance variable:
+		- An instance variable is for example String name; for a person object. 
+		- The variable is stored in the stack but it references to a memory location in the heap. 
+		- If we would give the person object a name. The actual String name will be stored in the Heap. 
+		
+Memory addresses between objects:
+		- Are stored in the heap, not in the stack. 		
+
+
+			
+			
+		 
