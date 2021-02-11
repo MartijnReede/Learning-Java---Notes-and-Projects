@@ -1,0 +1,11 @@
+How is java code organized?
+
+	1. Package
+	2. Java class file
+	3. Java class file (specification) blueprint to create actual objects.
+	4. Methods (behavior)
+
+Objects come into existence during application runtime.
+	- If the application is not running, there are no objects. 
+	- They will show their behavior during application runtime. 
+
