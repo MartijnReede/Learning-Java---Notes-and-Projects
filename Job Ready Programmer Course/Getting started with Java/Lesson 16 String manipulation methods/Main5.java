@@ -51,5 +51,14 @@ public class Main5 {
 		if (i.equalsIgnoreCase(j)) {
 			System.out.println("i and j are the same!");
 		}
+		
+		//Splitting a string into an array.
+		String test = "Hi,Bye,Cow,Chicken,Blabla,Beer";
+		String[] splittedTest = test.split(",");
+		
+		for (int i = 0; i < splittedTest.length; i++){
+			System.out.println(splittedTest[i]);
+		}
+		
 	}
 }
