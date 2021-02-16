@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.util.List;
 import fileprocessors.StockFileReader;
 
-public class AggregatorProcessor<aggregator> {
+public class AggregatorProcessor<aggregator extends Aggregator> {
 	
 	Aggregator aggregator;
 	String filePath;
