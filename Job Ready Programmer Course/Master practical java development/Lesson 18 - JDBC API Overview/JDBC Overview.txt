@@ -1,0 +1,47 @@
+JDBC = Java Database Connectivity. 
+
+Its essentially an API that communicates with a database. 
+
+This database can run on your own computer, or somewhere else on a server.
+The process of connecting to it will be the same. 
+
+There are different database vendors like:
+- Postgres
+- Microsoft
+- IBM
+- Oracle
+
+Although the vendors are different, they basically work the same with the language SQL. 
+If you know SQL you can basically work with any database. 
+
+Overview of JDBC:
+
+JAVA APPLICATION CONTAINS:
+- The application
+- JDBC API
+- Vendor driver software
+
+VENDOR DRIVER SOFTWARE:
+- Connects to the database. 
+
+So to connect a Java application to a database, we have to download the driver from the corresponding vendor.
+If we add the driver to the classpath, we can connect to the specific database. This driver cannot be used
+for other vendors. 
+
+In this course we're going to connect to a MySql database. 
+
+To build a JDBC application we have to download:
+- MySql server
+- MySql workbench
+- Driver (connector)
+
+To work with the MySql server, it has to run as a service on your computer. When installing, it will
+ask if you want to run it as a service on the background when you are starting your computer. Click yes...
+
+
+
+
+
+
+
+
