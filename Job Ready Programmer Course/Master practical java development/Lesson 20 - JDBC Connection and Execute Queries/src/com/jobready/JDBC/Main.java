@@ -39,7 +39,7 @@ private static int totalSalary;
 		String username = "root";
 		
 		//Set password. This is the password that  is used to log into the database in MySql workbench. 
-		String password = "12Amsterdam!";	
+		String password = "somePassword";	
 		
 		//Connect to database and establish connection object. 
 		try {
