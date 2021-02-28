@@ -10,9 +10,9 @@ public class BasicsExplained {
 		//are invoked inside of running methods, the stack memory will look like this: 
 		//
 		//			____STACK MEMORY_____
-		//			|					|	
+		//			|			|	
 		//			|doOnelastThing()__	|	
-		//			|doSomethingmore()__|		
+		//			|doSomethingmore()______|		
 		//			|__doSomething()___	|	
 		//			|______MAIN()___	|	
 
@@ -37,10 +37,10 @@ public class BasicsExplained {
 		//With recursion the memory stack will look like this:
 		
 		//			____STACK MEMORY_____
-		//			|					|	
+		//			|___________________|	
 		//			|____doWork()_______|	
 		//			|____doWork()_______|		
-		//			|_____doWork()____	|	
+		//			|_____doWork()______|	
 		//			|______MAIN()_______|	
 		//
 		//This will pile up until we run out of stack space.  If this happens we will get a stack overflow error. 
