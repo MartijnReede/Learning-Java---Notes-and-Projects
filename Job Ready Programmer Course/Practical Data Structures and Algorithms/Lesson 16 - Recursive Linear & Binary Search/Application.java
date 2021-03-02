@@ -12,7 +12,7 @@ public class Application {
 		int indexOfFive = recursiveLinearSearch(myArray, 0, 5);
 		System.out.println("Index of five = " + indexOfFive);
 
-		//Now I want to search again for the index number for value 5, but I want to use 
+		//Now I want to search again for the index number of value 5, but I want to use 
 		//recursive binary search.
 		
 		
