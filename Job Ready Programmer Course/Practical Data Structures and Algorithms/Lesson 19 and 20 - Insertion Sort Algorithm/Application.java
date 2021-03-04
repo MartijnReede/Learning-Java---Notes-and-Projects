@@ -46,7 +46,7 @@ public class Application {
 	//The code above can be a little bit confusing. So, below I've tried to clarify it a little more: 
 	//Lets assume that the array is almost sorted. Only the last number is not sorted yet. 
 				
-	//				|   sorted  | not sorted
+	//			|   sorted  | not sorted
 	//Array			1, 5, 10, 20, 2;
 	
 	//How is the code above going to solve it? 
