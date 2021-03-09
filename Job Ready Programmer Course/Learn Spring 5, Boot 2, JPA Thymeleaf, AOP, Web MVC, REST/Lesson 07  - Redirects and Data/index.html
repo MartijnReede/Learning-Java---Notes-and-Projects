@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>This demonstrates the basics of Spring Boot!</title>
+</head>
+<body>
+	<h3>Welcome to the Spring Boot Demo!</h3>
+	<hr/>
+	<form action="/addToDatabase" method="POST" th:object="${newUser}">
+		<p>FIRST NAME: 		<input type="text" th:field="${newUser.firstName}"/></p>
+		<p>LAST NAME:  		<input type="text" th:field="${newUser.lastName}"/></p>
+		<p>AGE:             <input type="text" th:field="${newUser.age}"/></p>
+		<p>FAVORITE ANIMAL: <input type="text" th:field="${newUser.favoriteAnimal}"/></p>
+		<p>SELECT YOUR GENDER:</p>
+		<p>Male <input type="radio" th:value="Male" th:name="selectGender" th:field="${newUser.gender}"/>
+   		Female <input type="radio" th:value="Female" th:name="selectGender" th:field="${newUser.gender}"/></p>
+		<p>SUBMIT USER INFO: <input type="submit" value="GO!"/></p>   
+	</form>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<h3>New user submitted!</h3>
+	<hr/>
+	
+	<p>FIRST NAME:		<span th:text="${user.firstName}"></span></p>
+	<p>LAST NAME:		<span th:text="${user.lastName}"></span></p>
+	<p>AGE:				<span th:text="${user.age}"></span></p>
+	<p>FAVORITE ANIMAL:	<span th:text="${user.favoriteAnimal}"></span></p>
+	<p>GENDER:			<span th:text="${user.gender}"></span></p>
+	
+</body>
+</html>
