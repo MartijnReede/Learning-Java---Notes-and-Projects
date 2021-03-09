@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h3>This is HTML from the pages folder inside the templates folder...</h3>
+	<p>The info you put into the form is:</p>
+	<p>FULL NAME:</p>
+	<p><span th:text="${user.fullName}"></span> </p>
+	
+	<p>AGE:</p> 
+	<p><span th:text="${user.age}"></span> </p>
+	
+	<p>FAVORITE ANIMAL</p>
+	<p><span th:text="${user.favoriteAnimal}"></span> </p>
+	
+</body>
+</html>

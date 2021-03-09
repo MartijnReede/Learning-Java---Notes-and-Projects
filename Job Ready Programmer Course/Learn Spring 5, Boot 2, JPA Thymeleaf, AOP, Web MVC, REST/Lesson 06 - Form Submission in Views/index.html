@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<h1>Welcome to our first website, please enter your information below!</h1>
+	
+	<form action="/submitted" method="POST" th:object="${formData}">
+	<p>Full Name: <input type="text" th:field="${formData.fullName}"/></p>
+	<p>Age: <input type="text" th:field="${formData.age}"/> </p>
+	<p>Favorite Animal: <input type="text" th:field="${formData.favoriteAnimal}"/></p>
+	<p>Confirm Information <input type="submit" value="Submit"/> </p>
+	</form>
+
+
+</body>
+</html>
