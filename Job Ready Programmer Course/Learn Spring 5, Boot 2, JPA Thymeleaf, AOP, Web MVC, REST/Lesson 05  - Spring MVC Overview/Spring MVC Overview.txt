@@ -1,0 +1,25 @@
+The controller is a big piece of Spring Application development. Especially with web apps. 
+Any HTTP request that comes to your application will be handled by a controller. 
+
+These controllers are part of the MVC framework. 
+
+MVC stands for Model View Controller. 
+
+What is a view:
+	- Anything that displays something, like the HTML pages that we write. 
+	- The controller interacts with the view.
+
+What is a model:
+	- The controller also interacts with the model. 
+	- If you are working with data in your application, that is where the model aspect comes in. 
+	- If we submmit a form that will be inserted into a database, a model object will handle this. 
+
+- Where does the controller fit in:
+	- The controller sits in the middle of the HTTP requests, the model and the view. 
+
+Until now, we've hardcoded HTML inside of the controller methods. This is not the correct way of doing it. 
+In the next lesson we're going to delete the HTML code from the controller class and create HTML files that
+we store in the templates foler. 
+
+
+
