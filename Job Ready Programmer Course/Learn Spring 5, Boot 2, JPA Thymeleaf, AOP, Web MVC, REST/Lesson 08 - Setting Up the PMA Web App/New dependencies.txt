@@ -1,0 +1,19 @@
+During the next episodes of the course, we're going to create a PMA (Project Management Application).
+In this lesson we're only going to set up the project, but some new dependencies are introduced:
+
+- Spring Web:
+	This imports Spring MVC (Model View Controller)
+
+- H2:
+	This is an embedded database. Think of it as a temporary database which is used for testing. 
+
+- JPA:
+	This is the Java Persitence API. This is used for storing, accessing, and managing Java objects in
+	a relational database. It makes working with data a lot easyier. JDBC was used back in the days,
+	but this is faster and easier.
+
+- Thymeleaf:
+	To build html pages.
+
+- Dev Tools:
+	Changes in your code will reflect in your browser. 
