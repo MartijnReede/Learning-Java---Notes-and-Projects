@@ -1,0 +1,5 @@
+This lesson repeated how to bind a Java object to an HTML form. 
+
+Some new annotations were introduced:
+Instead of typing: RequestMapping(method = RequestMethod.GET) we can just type: @GetMapping
+The same works for other kinds of mappings.... like @PostMapping
