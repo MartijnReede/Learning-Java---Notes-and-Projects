@@ -1,0 +1,46 @@
+CRUD (Create, Read, Update and Delete).
+A CRUD operation can be defined as user interface conventions that allow, view, search and modify information 
+through computer-based forms and reports. 
+
+We have to specify some properties for the database in the application. We go to the directory of the Spring project
+then click on src/main/recourses --> application.properties. 
+
+1. spring.h2.console.enabled=true
+	This is going to enable the GUI console for browsing the contents of a database and running SQL queries.
+
+2. spring.h2.console.path=/h2-console
+	If we go to localhost8080/h2-console it takes us to the login page of the database.
+
+3. spring.jpa.show-sql=true
+	In the background the jpa is going to create a database and the required tables. 
+	If we set show-sql to true, the console is going to display what jpa is doing. 
+
+4. spring.thymeleaf.cache=false
+	If we make changes to the website, it displays these changes right away. 
+	This is TERRABLE for production, but really USEFUL for development.
+
+5. spring.datasource.url=jdbc:h2:mem:testdb
+	First this was the default location for the database but it is not anymore. To make it work, we have to
+	set this as the database location. 
+
+DAO (Data Access Object):
+ 	How do we save entities to the database? We use a CRUD repository. First, we have to make a class
+	which extends CrudRepository<Name of entity class, id Data Type (this should be the class name, not primitive data type)>
+
+@Autowire:
+	To use this DAO we need an instance of this class. In the controller we would create a variable:
+	ProjectRepository proRep;
+	If we use the annotation @Autowire above it, we don't have to create an instance of this class ourselves.
+	If needed, Spring is going to inject the object so we can use it. 
+
+Accessing the database:
+	Then we have to open our browser and go to localhost8080/h2-console
+	To enter the database we have to specify the JDBC URL: jdbc:h2:mem:testdb
+	This is the default test database. We can change this in the application, but for this demonstration
+	we are not going to do this. 
+
+Another userful thing to know:
+	Every time we change something in the code of the controller, the database is going to be reset. 
+	Every record entry we did before is going to be removed. This is because we use DevTools. Everytime we
+	change something, DevTools is going to redeploy the application. 
+	
