@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home page</title>
+
+<style th:replace="layouts :: tableStyle"></style>
+<style th:replace="layouts :: navStyle"></style>
+
+</head>
+<body>
+
+<div th:replace="layouts :: navBody"></div>
+
+<div> 
+<h4>CURRENT PROJECTS</h4>
+	<table>
+		<thead>
+			<tr>
+				<th>Project ID</th>
+				<th>Project Name</th>
+				<th>Project Stage</th>
+				<th>Project Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="aProject : ${projectsList}">
+				<td th:text="${aProject.projectId}"/>
+				<td th:text="${aProject.name}"/>
+				<td th:text="${aProject.stage}"/>
+				<td th:text="${aProject.description}"/>
+			</tr>
+		</tbody>
+	</table>
+</div>	
+
+<br/><br/>
+
+<div>
+<h4>EMPLOYEES HIRED</h4>
+	<table>
+		<thead>
+			<tr>
+				<th>ID </th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Email Address</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="anEmployee : ${employeesList}">
+				<td th:text="${anEmployee.employeeId}"/>
+				<td th:text="${anEmployee.firstName}"/>
+				<td th:text="${anEmployee.lastName}"/>
+				<td th:text="${anEmployee.email}"/>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+</body>
+</html>

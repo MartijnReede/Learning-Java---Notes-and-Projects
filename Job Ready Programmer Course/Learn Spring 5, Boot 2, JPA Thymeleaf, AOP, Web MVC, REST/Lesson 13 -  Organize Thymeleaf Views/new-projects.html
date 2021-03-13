@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+   
+   <style th:replace="layouts :: formStyle"></style>
+   <style th:replace="layouts :: navStyle"></style>
+</head>
+
+<body>
+	<div th:replace="layouts :: navBody"></div>
+	
+	<div>
+	<h3>ADD NEW PROJECT</h3>
+	<hr/>
+	
+		<form action="/projects/save" th:object="${project}" method="POST">
+		<input type="text" placeholder="Project Name" th:field="${project.name}">
+		
+		<Select th:field="${project.stage}">
+			<option th:value="NOTSTARTED">Not Started</option>
+			<option th:value="INPROGRESS">In Progress</option>
+			<option th:value="COMPLETED">Completed</option>
+		</Select>
+		
+		<input type="text" placeholder="Enter Project Description" th:field="${project.description}"></textarea>
+		<p><input type="submit" value="Submit"></p>
+		</form>
+	</div>
+	
+</body>
+
+</html>

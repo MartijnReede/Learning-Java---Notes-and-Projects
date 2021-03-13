@@ -1,0 +1,27 @@
+Keeping all the html template files in the templates folder can become a bit unorganized. It's better to create
+folders for each subject. When referencing to the templates, put the folder name first like:
+return "emplyees/new-employee";
+
+LAYOUT HTML FILE:
+	- If a certain style or layout is needed, it is not good practice to copy all this code in every html template.
+	it is better to create a layouts.html file in the templates folder. Here you put all the html/css code.
+	If we have a navigation bar in the layouts file, we can reference to it from all other templates.
+
+IN THE LAYOUTS FILE:
+	<nav th:fragment="navBar">
+		<!-- Some code that creates the navbar -->
+	</nav>
+
+IN THE OTHER HTML FILES:
+	<nav th:replace="layouts :: navBar"></nav>
+
+This will keep your code a lot cleaner. If we reference to a certain style, we place this between the <head> tags.
+so:
+	<head>
+		<style th:replace="layouts :: navStyle">
+	</head>
+
+If there is actual content in it, it has to be placed inside of the body.
+	<body>
+		<div th:replace="layouts :: navBody">
+	</body> 
