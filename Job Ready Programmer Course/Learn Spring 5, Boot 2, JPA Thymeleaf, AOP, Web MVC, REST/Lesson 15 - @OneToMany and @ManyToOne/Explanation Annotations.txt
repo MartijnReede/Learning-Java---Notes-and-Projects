@@ -1,0 +1,52 @@
+Until now, the entities of our web application don't have a relationship with each other. 
+To assign employees to a certain project, we use the @OneToMany and @ManyToOne annotation.
+
+The goal is, to give the employees table a new column with project_ID. The projects table is not going to have
+an employees column. The project_ID will be a foreign key in the employees table. 
+
+The project can have many employees, so in the Project class we use the @OneToMany annotation. 
+
+The employees can only have one project, so in the employees class we use the @ManyToOne annotation. 
+
+This is not enough:
+
+IN PROJECT CLASS:
+
+@OneToMany(MappedBy="theProject")
+private List<Employee> employees;
+
+IN EMPLOYEE CLASS:
+
+@ManyToOne
+@JoinColumn(name="project_id")
+private Project theProject;
+
+Now we have a project_id column in the employee table which contains the project it is assigned to. 
+
+We're not done in these classes yet. We have to create getters and setters, both for the list of employees in the
+project class and the project field in the employees class. 
+
+Also, we need to specify what happens if something changes in the parent entity.
+So, in the employees class we define this: 
+@ManyToOne(cascade = {CascadeType.SOMETYPE, CascadeType.SOMEOTHERTYPE})
+
+Cascade basically means that if something happens to the parent, what should happen to the children. 
+
+Cascade types:
+ALL 	--> All types will be applied if something happens to the project entity. 
+DETACH  --> This means if we detach the project from an employee, the employee will also be detached from the project.
+MERGE	--> If the parent project is merged with another project, the employees are merged as well. 
+PERSIST --> When the parent project is saved, so are the children.
+REFRESH	--> If the parent will be refreshed, so are the children. 
+REMOVE 	--> If the parent entity is deleted, so are the employees.
+
+
+After cascade, we can also define the fetch rules by: 
+fetch = FetchType.SOMETYPE
+
+fetch types:
+LAZY 	--> 	If a project is loaded, on the background of the application (in memory), all the children are not loaded with it. 
+		Most of the time, LAZY is the way to go. If we need all the children entities, we can ask
+		for them serperately.
+EAGER	--> 	If the project is loaded, on the background of the application (in memory), all the children
+		are loaded as well. This will slow down your application. 
