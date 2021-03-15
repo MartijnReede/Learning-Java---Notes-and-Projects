@@ -49,6 +49,7 @@ public class ProjectController {
 	@PostMapping(value = "/save")
 	public String createProject(Project project, @RequestParam List<Long> employees, Model model) {
 		//This handles saving to the database. 
+		//IMPORTANT: Save the project first, otherwise the database doesn't know to what project the employees should be assigned to!
 		proRepo.save(project);
 		
 		List<Employee> chosenEmployees = (List<Employee>) empRepo.findAllById(employees);
