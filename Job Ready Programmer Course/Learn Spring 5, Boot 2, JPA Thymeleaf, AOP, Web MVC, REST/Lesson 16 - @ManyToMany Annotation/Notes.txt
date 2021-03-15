@@ -1,6 +1,6 @@
 @ManyToMany Annotation:
 	- This means that: Employees can be assigned to many projects and projects can be assigned to many employees. 
-	- In the database there need to be created a new table for this which contains employee_id and project_id.
+	- In the database, a seperate table needs to be created for this which contains employee_id and project_id.
 	- The name for this table is "Intemediary Join Table".
 
 With @ManyToMany, some extra Annotations need to be written down:
