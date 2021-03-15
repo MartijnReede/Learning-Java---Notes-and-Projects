@@ -28,5 +28,6 @@ With @ManyToMany, some extra Annotations need to be written down:
 	private List<Project>projects; 
 
 Of course this means getters and setters need to be changed as well. Also the controller needs to be changed.
-But, we don't have to do anything. Just saving the project or saving the employee will be enough. Spring
-is smart enough to understand the relationship between those two entities.
+But we don't have to do anything besides saving the project or employee. Spring
+is smart enough to understand the relationship between those two entities. So, instead of iterating through
+a list of employees and assign a projectId to them, we only have to save the project now. 
