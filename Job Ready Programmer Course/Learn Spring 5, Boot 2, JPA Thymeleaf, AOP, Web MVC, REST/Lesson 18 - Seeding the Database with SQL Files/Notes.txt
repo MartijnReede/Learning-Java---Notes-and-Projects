@@ -1,0 +1,26 @@
+The only thing we need to do, is create an SQL file with the name data.sql. If we place this in
+the resources folder, hibernate will look for this file and add the data from the file to the database.
+
+An important thing to know is that the structure for the database is defined in the java classes
+this data file only gives the data to the database. Hibernate (an implementation of JPA) is taking care
+of this when reading the entity classes.
+
+If we don't want to define all these things in the entity classes, we can create a schema.sql file
+that also needs to be added to the resources folder. In this file we put all our create table, etc,
+statements. If we add a schema.sql file, JPA won't get the information for how to structure the database
+from the entity classes. We still need the @Entity annotation and getters, setters, constructors, etc in the pojo class.
+
+IMPORTANT: If we want to use a schema file, we also have to set a property for this in application.properties.
+spring.jpa.hibernate.ddl-auto=none
+This ensures that the rules that we defined in the entity classes are not applied. Purely SQL will be used.
+
+ALSO IMPORTANT: With adding data to the database using an SQL file, we've created a bug. If I would
+add another project or employee via the browser, we'll get an error. This is because the primary key it wants
+to use, is already used. If the last employee from the data.sql file has a PK of 9, the next employee
+added in the browser won't get the PK of 10, it will assign a PK of 1 to it which is already occupied.
+
+If we would use the CommandLineRunner method in java, we wouldn't get an error. So how to fix this problem when we
+are using the data.sql file? If we change the @GeneratedValue(strategy=GenerationType.AUTO) to 
+@GeneratedValue(strategy=GenerationType.IDENTITY), assigning the ID value will be handled by the database, not
+by the Java code. Using the IDENTITY GenerationType is a slower approach. But since we are only adding single
+projects or employees this will work just fine. 
