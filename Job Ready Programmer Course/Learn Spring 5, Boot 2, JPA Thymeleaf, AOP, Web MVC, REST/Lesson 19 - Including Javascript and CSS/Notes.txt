@@ -1,0 +1,15 @@
+Where do we store CSS, Javascript or image files? 
+
+In the src --> recources -->static folder, we create new folders named CSS, JS or Images.
+Here we store all those files. 
+
+For this lesson we want to add a chart to our web application. We're getting this from www.chartjs.org
+
+We'll choose a pie chart for this lesson. And we copy the code from jschart.org to a new JS file in a JS folder 
+in src-recourses. 
+
+Make sure all of your javascript code is at the bottom of your html file. Javascript can take some time to load, so it is better
+to load the rest first. 
+
+To place the canvas on the web page, we have to create a canvas. Also we are referencing to the js file but the pie chart
+does not show anything yet.

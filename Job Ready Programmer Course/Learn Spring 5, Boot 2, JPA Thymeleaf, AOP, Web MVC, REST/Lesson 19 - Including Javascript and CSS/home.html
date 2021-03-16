@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home page</title>
+
+<style th:replace="layouts :: tableStyle"></style>
+<style th:replace="layouts :: navStyle"></style>
+
+</head>
+<body>
+
+<div th:replace="layouts :: navBody"></div>
+
+<div> 
+<h2>Welcome to PMA</h2>
+Your solution to project management!
+</div>
+
+<div class="col-md-4">
+	<canvas id="myPieChart" height="50" width="50"></canvas>
+</div>
+
+<script type="text/javascript" th:src="@{js/myPieChart.js}"></script>
+
+</body>
+</html>
