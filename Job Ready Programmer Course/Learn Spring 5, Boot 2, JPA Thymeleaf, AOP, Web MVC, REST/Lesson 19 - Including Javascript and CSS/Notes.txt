@@ -4,6 +4,8 @@ In the src --> recources -->static folder, we create new folders named CSS, JS o
 Here we store all those files. 
 
 For this lesson we want to add a chart to our web application. We're getting this from www.chartjs.org
+We can copy the JS code for the chart from there, but we also need to link to the code that is actually creating the chart.
+For the chart we use in this lesson, we have to use this import: <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
 We'll choose a pie chart for this lesson. And we copy the code from jschart.org to a new JS file in a JS folder 
 in src-recourses. 
