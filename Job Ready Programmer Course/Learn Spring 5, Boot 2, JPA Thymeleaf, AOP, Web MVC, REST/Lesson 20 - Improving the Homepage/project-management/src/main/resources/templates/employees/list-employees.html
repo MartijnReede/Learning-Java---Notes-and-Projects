@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>List of Employees</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/applicationstyle.css}"/>
+
+</head>
+<body>
+
+	<div th:replace="layouts :: navBody"></div>
+<br/>
+<div>
+	<form action="/employees/new" method="GET">
+	<input type="submit" value="New Employee"/>
+	</form>
+</div>
+	
+<div class="tableDiv">
+	<h4>EMPLOYEES HIRED</h4>
+	<table class="table">
+		<thead>
+			<tr>
+				<th class="tableHeader">ID </th>
+				<th class="tableHeader">First Name</th>
+				<th class="tableHeader">Last Name</th>
+				<th class="tableHeader">Email Address</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="anEmployee : ${employeesList}">
+				<td class="tableData" th:text="${anEmployee.employeeId}"/>
+				<td class="tableData" th:text="${anEmployee.firstName}"/>
+				<td class="tableData" th:text="${anEmployee.lastName}"/>
+				<td class="tableData" th:text="${anEmployee.email}"/>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>List of Projects</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/applicationstyle.css}"/>
+</head>
+<body>
+
+<div th:replace="layouts :: navBody"></div>
+<br/>
+<div>
+	<form action="/projects/new" method="GET">
+	<input type="submit" value="New Project">
+	</form>
+</div>
+
+<div class="tableDiv"> 
+<h4>CURRENT PROJECTS</h4>
+	<table class="table">
+		<thead>
+			<tr>
+				<th class="tableHeader">Project ID</th>
+				<th class="tableHeader">Project Name</th>
+				<th class="tableHeader">Project Stage</th>
+				<th class="tableHeader">Project Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="aProject : ${projectsList}">
+				<td class="tableData" th:text="${aProject.projectId}"/>
+				<td class="tableData" th:text="${aProject.name}"/>
+				<td class="tableData" th:text="${aProject.stage}"/>
+				<td class="tableData" th:text="${aProject.description}"/>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,2 @@
+In this lesson we've improved the complete web application. I've also reorganized all the files and folders.
+This seems to be a good moment to upload the complete project.
