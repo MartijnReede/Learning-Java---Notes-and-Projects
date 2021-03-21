@@ -1,0 +1,37 @@
+In this lesson, we're going to display the amounts of projects each employee has on the dashboard.
+
+To do this, we have to update the employees repository with a custom query. We have to create a new method for that.
+We use the @Query annotation for defining the Query. We have to use the parameter nativeQuery=true. This means
+that we want the query to be used for our database, not for spring. There are Spring JPA queries as well, but we're
+going to use a SQL query that is used for the H-2 database. 
+
+@Query(nativeQuery=true, value="SELECT e.first_name as firstName, e.last_name as lastName, COUNT(pe.employee_id) as projectCount
+FROM employee e left join project_employee pe ON pe.employee_id = e.employee_id
+GROUP BY e.first_name, e.last_name ORDER BY 3 DESC")
+public List<EmployeeProject>employeeProjects();
+
+We've written the query in the H2-console to check if it works.
+
+VERY IMPORTANT: If we copy the query into Java, java puts /n and + signs in the middle of the string. The + signs can stay, but the 
+/n's need to be removed. Also, after every + sign, Java removes a space. We need to put those back. 
+
+We could use hashmaps or multiple lists to process the data, but we can also use a DTA (data transfer object). How do we create one?
+We don't have to create an actual object, but an inteface. This interface must match the column names.
+In the query, we named the column names AS firstName, AS lastName and AS projectCount.
+
+So we create a new package called DTO and create the new interface there. 
+
+public interface EmployeeProject {
+
+	public String getFirstName();
+	public String getLastName();
+	public int getProjectCount();
+	
+}
+
+Notice that we write "get" before each columname. That is how spring knows to use the DTO.
+
+Now this method will be available in the controller and is ready to use:  public List<EmployeeProject>employeeProjects();
+
+
+
