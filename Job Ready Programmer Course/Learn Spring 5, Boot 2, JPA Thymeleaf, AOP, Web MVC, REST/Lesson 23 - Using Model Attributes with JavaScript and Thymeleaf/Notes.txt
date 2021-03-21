@@ -1,0 +1,9 @@
+This lesson will mainly be about JavaScript.
+
+In the previous lesson we prepared the controller. To refer to an model attribute in Javascript, we don´t
+use the ${someAttribute}. We use [[${someAttribute}]] in JavaScript. So we use this between <script></script tags in the HTML file. 
+
+Check the JavaScript file for more info about this lesson. I´ve typed along with the teacher, I will learn JavaScript some other time....
+
+
+
