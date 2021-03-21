@@ -1,0 +1,39 @@
+In this lesson, we're going to prepare the home controller to take the project data and put it into 
+the JavaScript chart. 
+
+Since the chart is in Javascript, we have to convert the data to JSON. JSON stands for JavaScript Object Notation.
+
+First, we have to create a map which contains a String for the project stage (in progress, completed or unstarted) 
+and an object which stands for the value (amount of projects). In this lesson, it is not clear yet why we have to create this map. 
+
+Now we have to convert the data into a JSON structure for use in JavaScript. We use an ObjectMapper for this. 
+Then we use the writeValueAsString(ProjectStages) method and we pass in the list of DTO's. We're going to
+save this in a String variable. 
+
+Then we can use the model.addAttribute method to use the JSON in the view. 
+
+The homecontroller will look like this: 
+
+@GetMapping(value="/")
+	public String homePage(Model model) throws JsonProcessingException {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<ProjectStage> projectStages = proRepo.projectStages();
+		model.addAttribute("projectStagesList", projectStages);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		String jsonString = objectMapper.writeValueAsString(projectStages);
+		model.addAttribute("chartData", jsonString);
+		
+		//This jsonString is now an array of arrays:
+		//[["NOTSTARTED", 1], ["INPROGRESS", 2], ["COMPLETED", 1]]
+
+		List<EmployeeProject> employeesProjects = empRepo.employeeProjects();
+		model.addAttribute("employeesProjectsList", employeesProjects);
+		
+		return "home/home";
+	}
+
+
+
