@@ -1,0 +1,12 @@
+In the previous lesson, we were reading values from the application.properties file. These values
+were defined there. Sometimes we don´t want to see what these property values are like usernames or 
+passwords. We can do this by not defining them inside of the property file but in the environment. 
+
+The version property will look like this then:
+version=${envVersionNum}
+
+Now we have to set the number of the version inside of the environment which is going to be used by our 
+application. 
+
+The developer won't have access to the properties now. In the video of this lesson, linux is used....
+I have Windows so figuring out how this works is something for another time. 
