@@ -1,0 +1,26 @@
+For this lesson we want our application to work with a real database, not with our testing H2
+database. 
+
+First we start with creating a new application.properties file since our current properties are 
+for developing and testing our application. We create a new file (just a normal file) and call it
+application-test.properties. We copy all our properties in there. 
+
+For this course we're going to work with PostgreSQL so I downloaded and installed the database
+application.
+
+We are installing 3 components:
+- PostgreSQL sever (the actual database).
+- pgAdmin 4 (User interface).
+- Command Line Tools (allows us to use the command line to do things with the database).
+
+the username for the databse will be "postgres"
+
+To go to the UI we have to open pgAdmin 4 from the start menu. We've created a new database there called
+pma-SpringBootDB. 
+
+Now we have to connect our Spring application to this database. But to do this, we need a PostgreSQL
+driver. We can add this simply by adding it as a dependency. We can copy paste it in our pom.xml file
+or we can add the dependency using "Spring Add Starters".
+
+Writing the correct settings to connect to the database will be discussed in the next lesson. 
+ 
