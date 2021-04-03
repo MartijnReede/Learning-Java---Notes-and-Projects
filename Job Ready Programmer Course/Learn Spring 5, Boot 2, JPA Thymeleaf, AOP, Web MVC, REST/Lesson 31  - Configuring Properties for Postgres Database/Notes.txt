@@ -1,0 +1,123 @@
+For this lesson, the teacher gave me some properties: 
+
+----- PROPERTIES ------
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/pma-springbootdb
+spring.datasource.username=postgres
+spring.datasource.password=password321
+
+spring.datasource.initialization-mode=never
+
+spring.jpa.hibernate.ddl-auto=none
+
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+
+spring.jpa.show-sql=true
+spring.thymeleaf.cache=false
+version=3.0.0
+
+----  EXPLANATION ----
+
+Datasource URL: 	This is the location of the database, so: jdbc, database type and then the 
+	        	localhost we reserved for the database plus the database that we created ourselves.
+
+Datasource Login:	Username and password for the database. 
+
+Initialization-mode: 	This is a very important setting. If this is set to never, the application won't
+			load the data.sql or schema.sql files. So if the application is in production we
+			don't want this data to load. We didn't set this property before, so why did
+			this sql file run? By default, it will allways run when using an embedded test database. 
+
+			There are two other options: embedded and always. If we choose embedded, Spring will only run the
+			data.sql and schema.sql files if we're using an embedded datbase like H2. If we set it to always, these
+			files will always run. 
+
+(ddl stands for: data definition language)
+hibernate.ddl-auto:	In an embedded database, the tables and columns are based on our entity classes  by default. 
+			In a real life database, we don't want this to happen, so we set it to none. We could change it
+			to validate, and this means that it makes sure that the datatypes from the database are the same
+			as the datatypes specified in the entity classes, and that the table names match each other. 
+			In production this is a very useful setting. 
+
+			Create: creates the  tables based on the java code. 
+
+			Create-drop: creates the tables based on the java code, but drops them when the application finishes. 
+
+jdbc.lob.non_conte...: 	This property used to be a default setting. If  we don't write this setting down, we are
+			likely to run in some SQL exceptions. It is not important how this works, just put it in 
+			your application.
+
+show-sql:		We're still in development mode, so we want this to be turned on. 
+
+thymeleaf.cache:	We're still in development mode, so we want this to be false. In production mode, we want this to
+			be true!
+
+If we run the application now, we run into an error. Not when we launch the application, but when we visit localhost:8080. It will
+give an error saying "Project" does not exist. The reason for this, is that we turned of DDL-auto=none. Hibernate is not going to 
+create those tables. 
+
+If we want this application to work, we have to specify a schema.sql file. In this file, i'm going to copy some sql code from the teacher
+
+------ SQL CODE -------
+
+CREATE SEQUENCE IF NOT EXISTS employee_seq;
+
+CREATE TABLE IF NOT EXISTS employee (
+
+employee_id BIGINT NOT NULL DEFAULT nextval('employee_seq') PRIMARY KEY,
+email VARCHAR(100) NOT NULL,
+first_name VARCHAR(100) NOT NULL,
+last_name VARCHAR(100) NOT NULL
+
+);
+
+CREATE SEQUENCE IF NOT EXISTS project_seq;
+
+CREATE TABLE IF NOT EXISTS project (
+
+project_id BIGINT NOT NULL DEFAULT nextval('project_seq') PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+stage VARCHAR(100) NOT NULL,
+description VARCHAR(500) NOT NULL
+
+);
+
+
+CREATE TABLE IF NOT EXISTS project_employee (
+
+project_id BIGINT REFERENCES project, 
+employee_id BIGINT REFERENCES employee
+
+);
+
+-----------------------------------------------------
+
+Now, since we use a sequence for the primary keys, we have to change the GeneratedValue(strategy=GenerationType.AUTO) to SEQUENCE.
+We also have to specify the generator, which is generator="employee_seq" for employees and project_seq for projects.
+
+--- CREATING THE TABLES ---
+
+If we want this application to run properly, we have to go to pgAdmin 4 and create those tables with the sql schema. 
+We click on the database we've created, then go to the Query Tool and execute the sql code. 
+
+Now the tables are created. 
+
+NOTE: I've got some error using generator = "employee_seq" and "project_seq" When I removed it, and changed the generationtype to IDENTITY
+it works without an error. 
+
+----- THE DATA STAYS! -----
+
+Now, since we're not using an embedded database anymore, the data will stay saved, even if we restart or close the application. 
+
+
+
+
+			
+
+
+
+
+
+
+
+
