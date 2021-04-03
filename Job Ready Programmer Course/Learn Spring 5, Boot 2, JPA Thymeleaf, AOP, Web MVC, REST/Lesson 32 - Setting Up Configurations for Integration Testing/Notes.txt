@@ -1,0 +1,76 @@
+If we're going to test our application, we don't want to test this in the
+live database, but in the H2 database, because testing will change the data in 
+the real database. This means that we want to use different
+properties for the testing. 
+
+So how do we test our application?
+
+1. Set up our scr/test/java folder.
+	- We're creating a new package there, and I call it com.jobready.dao
+	- I'm not going to call it com.jobready.pma.dao on purpose. 
+
+2. create a new src folder tere called src/test/resources
+	- This folder is going to contain the application.properties file that is for testing. 
+	- We named this file application-test.properties but we have to rename it to application.properties. 
+
+
+3. Check if we have the test dependency from Spring Boot
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+4. We need a schema.sql file, and the data.sql file 
+	- We can put this in the src/test/resources src folder. We don't need this anymore in our normal application.
+	- The schema.sql code is executing in pgAdmin 4 and the data.sql is not relevant anymore since we only want data from users. 
+	- We need those files, since an embedded database will be created when the application starts, but it will also be deleted when we stop.
+
+5. We need to make sure that our H2 database behaves the same as our Postgres database.
+	- We can do this by adding a property: jdbc.url=h2:mem:test;MODE=PostgreSQL;DB_CLOSE_DELAY=-1 
+
+6. We've created a class which defines all the properties to run the test:
+
+package com.jobready.DAO;
+
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.jdbc.SqlGroup;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.jobready.pma.ProjectManagementApplication;
+import com.jobready.pma.DAO.ProjectRepository;
+import com.jobready.pma.entities.Project;
+
+@ContextConfiguration(classes=ProjectManagementApplication.class)
+@RunWith(SpringRunner.class)
+@DataJpaTest
+@SqlGroup({@Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts={"classpath:schema.sql", "classpath:data.sql"}),
+	@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts="classpath:drop.sql")})
+public class ProjectRepositoryIntegrationTest {
+
+		@Autowired
+		ProjectRepository proRepo;
+		
+		@Test 
+		public void ifNewProjectSaved_thenSuccess() {
+			Project newProject = new Project("New test project", "COMPLETE", "Some interesting project.");
+			proRepo.save(newProject);
+			
+			List<Project> projects = (List<Project>) proRepo.findAll();
+			
+			assertEquals(5, projects.size());
+		}
+}
+
+If there are no errors the test succeeded.
