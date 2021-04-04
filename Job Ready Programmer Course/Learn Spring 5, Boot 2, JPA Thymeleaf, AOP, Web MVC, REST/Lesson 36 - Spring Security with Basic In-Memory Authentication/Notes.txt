@@ -1,0 +1,66 @@
+To work with Spring Security, we have to add the dependency to you POM file. 
+
+Now if we go to localhost8080 we get a login screen. The password to log in is
+written in the console when starting the application. The default username is "user".
+
+If we close the browser and go to localhost8080 again, we're still logged in. We can
+log out by going to localhost:8080/logout.
+
+And notice, that if we go to localhost:8080 the URL is changed automatically to localhost:88080/login.
+
+When you log in, this is called authentication. The system wants to know WHO is loggin in.
+Another piece of security is authorization. This basically means, are you allowed to
+enter the application or access certain parts of it. 
+
+We're going to start with overriding the default login page. We create a new package
+called com.jobready.pma.security
+
+Here we create a configuration class with an @Configuration annotation. 
+We also need a @EnableWebSecurity annotation to let Spring know that we configure 
+security here. '
+
+We have to override this specific method: 
+
+protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		this.disableLocalConfigureAuthenticationBldr = true;
+	}
+
+
+Now we've created this class where we created two users with two passwords. 
+
+package com.jobready.pma.security;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Override 
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.inMemoryAuthentication().withUser("test").password("pass").roles("USER")
+		.and().withUser("test2").password("pass2").roles("USER");
+	}
+	
+	
+}
+
+But this IS NOT ENOUGH! Spring won't let us define the login information like this. The passwords
+and usernames should not be visible. We need a PasswordEncoder to solve this problem. 
+
+For this lesson we're not going to create a real passwordEncoder. We're going to trick Spring 
+to make it look like we have one using this code: 
+
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+	}
+
+
+
+
+
+
