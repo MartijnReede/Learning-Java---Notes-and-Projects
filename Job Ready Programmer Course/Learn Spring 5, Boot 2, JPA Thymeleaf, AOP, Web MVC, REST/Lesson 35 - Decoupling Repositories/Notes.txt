@@ -1,0 +1,10 @@
+Decoupling repositories is adds a layer of distraction. Why would we do this?
+If we would move to another database, we only have to change our services instead
+of all our controllers. This is good practice!
+
+Instead of autowiring the repositories in the controllers, we create services that
+we inject in our controllers. The repositories are injected in our services.
+
+The service classes have an @Service annotation, so they will be part of the Spring context.
+
+I've uploaded the project again with all the changes.
