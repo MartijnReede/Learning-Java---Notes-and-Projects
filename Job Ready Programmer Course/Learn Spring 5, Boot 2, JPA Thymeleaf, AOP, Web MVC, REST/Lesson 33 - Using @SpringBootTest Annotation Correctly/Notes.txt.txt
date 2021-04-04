@@ -1,0 +1,76 @@
+If we look at the Spring docs, there is an annotation @SpringBootTest
+
+So why do we need all those other annotations? Spring is not smart enough to know
+what kind of test should be run. This is because we made a new package which is not
+in line with our other packages. We've created a package called com.jobready.DAO instead of
+com.jobready.PMA.DAO.
+
+A good thing to mention is that we would always need the @RunWith(SpringRunner.class)
+this is needed for running a test.
+
+So if we would write a test that didn't include any SQL files, all that we need would be
+@SpringBootTest
+@RunWith(SpringRunner.class)
+
+So to make the class below run properly, we have to change the naming convention of our
+package to com.jobready.pma.dao.
+
+We don't have to worry about giving it the same name as the package in our src folder.
+Since this is in the src/test/java folder.
+
+Now we can run the test without any problems. 
+
+----OUR TEST NOW -----
+
+@SpringBootTest
+@RunWith(SpringRunner.class)
+@SqlGroup({@Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts={"classpath:schema.sql", "classpath:data.sql"}),
+	@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts="classpath:drop.sql")})
+public class ProjectRepositoryIntegrationTest {
+
+		@Autowired
+		ProjectRepository proRepo;
+		
+		@Test 
+		public void ifNewProjectSaved_thenSuccess() {
+			Project newProject = new Project("New test project", "COMPLETE", "Some interesting project.");
+			proRepo.save(newProject);
+			
+			List<Project> projects = (List<Project>) proRepo.findAll();
+			
+			assertEquals(5, projects.size());
+		}
+}
+
+---- NO NEED FOR SQL FILES -----
+
+Adding the SQL files was just a demonstration. They are not needed to run the test  since
+hibernate is taking care of creating the tables etc. This means that we can remove those
+lines of code.  
+
+Now the test looks like this, but we have to change the assertEquals from 5 to 1 since we
+don't include the data.sql file. 
+
+@SpringBootTest
+@RunWith(SpringRunner.class)
+public class ProjectRepositoryIntegrationTest {
+
+		@Autowired
+		ProjectRepository proRepo;
+		
+		@Test 
+		public void ifNewProjectSaved_thenSuccess() {
+			Project newProject = new Project("New test project", "COMPLETE", "Some interesting project.");
+			proRepo.save(newProject);
+			
+			List<Project> projects = (List<Project>) proRepo.findAll();
+			
+			assertEquals(1, projects.size());
+		}
+}
+
+
+
+
+
+
