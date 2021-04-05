@@ -29,6 +29,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		//NOT MENTIONED IN THE LESSON, BUT SAVING TO THE DATABASE IS DISABLED WITH SPRING SECURITY!!!
+		//TO MAKE THIS POSSIBLE USE THIS LINE OF CODE:
+		http.csrf().disable(); //THIS MAKES THE APPLICATION LESS SECURE!
+		
 		http.authorizeRequests()
 		.antMatchers("/projects/new").hasRole("ADMIN")
 		.antMatchers("/employees/new").hasRole("ADMIN")
