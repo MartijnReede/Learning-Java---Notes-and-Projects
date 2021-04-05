@@ -1,0 +1,93 @@
+To work with JDBC backed security, we have to add the JDBC API dependency to our POM
+file. Since I've changed all the properties to a PostgreSQL database, I have to create
+a new properties file to use the H2 database. 
+
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+spring.jpa.show-sql=true
+spring.thymeleaf.cache=false
+spring.datasource.url=jdbc:h2:mem:testdb
+version=1.0.0.0
+
+Spring uses the properties file that is named: application.properties. So I change the
+properties file I already had to properties-prod.properties, and I change my new file to application.properties.
+
+
+Setting up the security class. 
+
+1. We need a datasource. Since we're using the H2 database, Spring is smart enough to know, that this is our
+datasource. We can create this datasource by autowiring it like this: 
+
+2. We need to change the in-memory authentication to jdbcAuthentication and we have to specify the datasource. 
+Also, we need to set it to use the default schema. This means, it creats default tables in our database. 
+
+3. We have to disable the csrf and headers.frameoptions with this code: 
+
+	http.csrf().disable();
+	http.headers().frameOptions().disable();
+
+4. We have to add an antMatchers("/h2_console/**).permitAll()
+
+Now the class looks like this: 
+
+package com.jobready.pma.security;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Autowired
+	DataSource datasource;
+	
+	
+	@Override 
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.jdbcAuthentication().dataSource(datasource)
+		.withDefaultSchema()
+		.withUser("test").password("pass").roles("USER").and()
+		.withUser("test2").password("pass2").roles("ADMIN");
+	}
+	
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+	}
+	
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		
+		
+		http.authorizeRequests()
+		.antMatchers("/projects/new").hasRole("ADMIN")
+		.antMatchers("/employees/new").hasRole("ADMIN")
+		.antMatchers("/h2_console/**").permitAll()
+		.antMatchers("/").authenticated().and().formLogin();
+	
+		http.csrf().disable();
+		http.headers().frameOptions().disable();
+	}
+	
+}
+
+In the h2-console, there are two new tables created:
+
+Table 1 AUTHORITIES:
+Column username + column authority (role)
+
+Table 2 USERS:
+column username + column password + column enables (Here we can enable or disable an account).
+
+
