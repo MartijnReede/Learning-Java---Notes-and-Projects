@@ -23,3 +23,8 @@ admins.
 I've added the complete class in this github folder.
 
 
+NOT MENTIONED IN THE LESSON:
+Save method to the repository didn't work anymore. Use this line of code to enable it. The application is less secure though....
+
+http.csrf().disable();
+
