@@ -1,0 +1,25 @@
+In the previous lesson, we've set up basic in-memory authentication. 
+Again: authentication means, WHO is logging in.
+
+Now we're going to talk about basic in-memory authorization. 
+This means: Is the person who is logged in authorized to access certain parts of the software
+and what is this person authorized to do...
+
+@Override
+Protected void configure(HttpSecurity http) throws Exception {
+	http.authorizeRequests().antMatchers("/projects/new").hasRole("ADMIN")
+	.antMatchers("/").authenticated().and().formLogin();
+}
+
+
+So in the method above, we have set two different rules. 
+
+1. Only admins can go to the projects/new endpoint and create new projects. 
+2. Everyone else can access the home page, as long as they are authenticated with the form-login. 
+
+Now to make the method more complete, I make the creation of new employees also available to only
+admins.
+
+I've added the complete class in this github folder.
+
+
