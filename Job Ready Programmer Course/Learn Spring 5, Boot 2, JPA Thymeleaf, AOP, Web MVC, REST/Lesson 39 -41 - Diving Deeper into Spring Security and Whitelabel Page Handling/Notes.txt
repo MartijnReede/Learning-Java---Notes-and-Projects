@@ -223,6 +223,19 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 }
 
+
+EDIT:
+
+This works to have a registration page available for everyone, but keep the rest locked for unauthenticated users.
+
+	//Authorization....
+	@Override
+	protected void configure (HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+		.antMatchers("/h2-console/**").hasRole("ADMIN")
+		.antMatchers("/register/**").permitAll()
+		.antMatchers("/**").authenticated().and().formLogin();
+
 ---------------- HANDLING WHITE LABEL PAGES -------------------
 
 After setting the whitelabel property in the application.properties file, we can write a controller to handle the errors. 
