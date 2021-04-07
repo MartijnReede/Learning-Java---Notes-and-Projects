@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home</title>
+</head>
+<body>
+<h3>Welcome to this secured website!</h3>
+<hr/>
+<br/>
+<form action="/admin" method="GET">
+	<input type="submit" value="Go to admin page"/>
+</form>
+
+<br/><br/>
+<form action="/user" method="GET">
+	<input type = "submit" value="Go to user page"/>
+</form>
+
+<br/><br/>
+<hr/>
+
+<p>IMPORTANT LEARNING POINTS:</p>
+Setting up the Spring security class:
+<ul>
+	<li>To enable the login screen we need to create a security package with a new class.</li>
+	<li>We have to extend this class with: WebSecurityConfigurerAdapter</li>
+	<li>We have to use two annotations for this class: @EnableWebSecurity(for enabling security) and @Configuration (for Spring Context).
+</ul>
+
+
+
+
+
+</body>
+</html>

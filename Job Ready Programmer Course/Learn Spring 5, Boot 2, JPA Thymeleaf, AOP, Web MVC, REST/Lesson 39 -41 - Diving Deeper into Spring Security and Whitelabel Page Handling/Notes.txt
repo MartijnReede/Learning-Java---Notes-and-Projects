@@ -1,0 +1,270 @@
+********* SPRING SECURITY AND WHITELABEL PAGE HANDLING ************
+
+---------- APPLICATION PROPERTIES ------------
+
+spring.h2.console.path=/h2-console
+spring.h2.console.enabled=true
+spring.jpa.show-sql=true
+spring.thymeleaf.cache=false
+spring.datasource.url=jdbc:h2:mem:testdb
+server.error.whitelabel.enabled=false      --> this enables us to customize our whitelabel pages.
+
+
+---------- USER ENTITY ----------
+
+Some important things about the user entity:
+	- The naming of the table, username, password and role is very important. In our security configuration we use these in a query. 
+	- The role of a user should  be saved as ROLE_roletype. If we don't do this, Spring won't recognize this as a role. 
+	- The enabled field (true or false) makes an account active or not. 
+
+@Entity
+@Table(name="USERS")
+public class User {
+	
+		@Id
+		@GeneratedValue(strategy = GenerationType.AUTO)
+		private long userId;
+		
+		@Column(name="username")
+		private String userName;
+		private String email;
+		private String password;
+		private boolean enabled = true;
+		private String role = "ROLE_USER";
+		
+		public User () {
+			
+		}
+
+		public User(String userName, String password, String email) {
+			super();
+			this.userName = userName;
+			this.password = password;
+			this.email = email;
+		}
+
+		public long getUserId() {
+			return userId;
+		}
+
+		public void setUserId(long userId) {
+			this.userId = userId;
+		}
+
+		public String getUserName() {
+			return userName;
+		}
+
+		public void setUserName(String userName) {
+			this.userName = userName;
+		}
+
+		public String getPassword() {
+			return password;
+		}
+
+		public void setPassword(String password) {
+			this.password = password;
+		}
+
+		public boolean isEnabled() {
+			return enabled;
+		}
+
+		public void setEnabled(boolean enabled) {
+			this.enabled = enabled;
+		}
+
+		public String getEmail() {
+			return email;
+		}
+
+		public void setEmail(String email) {
+			this.email = email;
+		}
+
+		public String getRole() {
+			return role;
+		}
+
+		public void setRole(String role) {
+			this.role = role;
+		}			
+}
+
+
+------------ REGISTER NEW USER WITH SECURITYCONTROLLER ----------
+
+Some important things about this controller: 
+	- We need to use a BCryptPasswordEncoder before we save the password. This encoder should be added to the spring context. 
+
+@Controller
+@RequestMapping("/register")
+public class SecurityController {
+	
+	@Autowired
+	BCryptPasswordEncoder encoder;
+	
+	@Autowired
+	UserRepository usRepo;
+	
+	@GetMapping
+	public String register(Model model) {
+		model.addAttribute("user", new User());
+		return "Security/Security-Register.html";
+	}
+	
+	@PostMapping(value="saveUser")
+	public String saveUser(User user) {
+		user.setPassword(encoder.encode(user.getPassword()));
+		usRepo.save(user);
+		return "redirect:/register/userSaved";
+	}
+	
+	@GetMapping(value="userSaved")
+	public String userSaved() {
+		return "Security/Security-User-Saved.html";
+	}
+}
+
+------------- ADDING ENCODER TO SPRING CONTEXT -------------
+
+package com.CMA.security;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class SecurityConfiguration implements WebMvcConfigurer {
+
+	@Bean
+	public BCryptPasswordEncoder encoder() {
+		return new BCryptPasswordEncoder();
+	}
+}
+
+
+------------- USER REGISTRATION VIEW -------------
+
+Some important things about the user registration form:
+	- <input type="hidden" name="_csrf" th:value="${_csrf.token}"/> This should be added to prevent a csrf attack when creating a new user. 
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Register here please!</title>
+</head>
+<body>
+	<form action="/register/saveUser" method="POST" th:object="${user}">
+		USERNAME: <input type="text" th:field="${user.userName}"><br/>
+		PASSWORD: <input type="password" th:field="${user.password}"><br/>
+		EMAIL ADDRESS: <input type="email" th:field="${user.email}"><br/>
+		<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+		<input type="submit" value="Create new user"><br/>
+	</form>
+</body>
+</html>
+
+------------ SPRING SECURITY CONFIGURATION -----------
+
+package com.CMA.security;
+
+import javax.sql.DataSource; 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@Configuration
+@EnableWebSecurity //enables web security
+public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+	
+
+	//Spring is smart enough to know that this is our H2 database since this is set in our application.properties file. 
+	@Autowired
+	DataSource dataSource;
+	
+	@Autowired
+	BCryptPasswordEncoder bCryptEncoder;
+	
+	//The custom queries from below need to match the fields from the user entity. The query should be exactly in this order: 
+	//username, password, enabled.
+
+	@Override 
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.jdbcAuthentication()
+		.usersByUsernameQuery("select username, password, enabled " +
+		"from USERS where username = ?" )
+		.authoritiesByUsernameQuery("select username, role from USERS where username = ?" )
+		.dataSource(dataSource).passwordEncoder(bCryptEncoder);	
+	}
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		
+		http.authorizeRequests()
+		
+		.antMatchers("/admin").hasRole("ADMIN") //Only admins can enter this endpoint.
+		.antMatchers("/user").hasRole("USER")	//Only normal users can enter this endpoint.
+		.antMatchers("/h2-console/**").hasRole("ADMIN") //Lets admins use the H2-Console
+		.anyRequest().authenticated().and().formLogin();
+		
+		
+		http.csrf().ignoringAntMatchers("/h2-console/**"); //Ignores  the protection against CSRF attacks(NOT GOOD FOR PROD!) 
+		http.headers().frameOptions().disable(); //enables H2 frame to be visible. 
+	}
+}
+
+---------------- HANDLING WHITE LABEL PAGES -------------------
+
+After setting the whitelabel property in the application.properties file, we can write a controller to handle the errors. 
+
+First we create an object, and if this is not null we handle the errors. Each error can have an own html view. 
+
+
+package com.CMA.controllers;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class AppErrorController implements ErrorController {
+
+		@Override
+		public String getErrorPath() {
+			return "/error";
+		}
+		
+		@GetMapping(value="/error")
+		public String errorHandler(HttpServletRequest request) {
+			Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+			
+			if (status != null) {
+				Integer statusCode = Integer.valueOf(status.toString()); //Converts the object to string. And creates an integer of that.
+			
+				if(statusCode == HttpStatus.NOT_FOUND.value()) {
+					return "error/Error-404.html";
+				} else if (statusCode == HttpStatus.FORBIDDEN.value()){
+					return "error/error-403.html";
+				} else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+					return "error/error-500badGateway.html";
+				}
+			}
+			return "error/general-errror-page.html";	
+		}
+}
+
+
