@@ -1,0 +1,99 @@
+How to set a custom login-page for Spring Security?
+
+Logging in to our application using Spring Security takes two steps:
+1. The GET request, to get the login form to the client. 
+2. The POST request, to handle the user input and process the authentication.  
+
+First we have to change our authorization settings in our WebSecurityConfigurerAdapter class and 
+add .loginpage("/login")
+
+The settings in my current application look like this: 
+
+	@Override
+	protected void configure (HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+		.antMatchers("/admin/**").hasRole("ADMIN")
+		.antMatchers("/user/**").hasRole("USER")
+		.antMatchers("/h2-console/**").hasRole("ADMIN")
+		.antMatchers("/login/**").permitAll()
+		.antMatchers("/register/**").permitAll()
+		.antMatchers("/**").authenticated().and().formLogin().loginPage("/login");
+
+
+
+Then we have to create  a controller which leads to our custom view that we defined in the loginPage setting. 
+
+@Controller
+public class LoginController {
+	
+	@GetMapping(value="/login")
+	public String login() {
+		return "login/login-page.html";
+	}
+}
+
+Now we can create our own login page. A good thing to know, is that we have to customize our logout page now as well. 
+So we need to create a simple controller and html file for that. 
+
+!!!! ---- VERY IMPORTANT: LOGGING IN AND OUT USES POST REQUESTS. ---- !!!!
+
+ WE NEED TO ADD A CSRF TOKEN, OR USE th:action="@{/login}" or "@{/logout}"
+Using thymeleaf like this with the th:action and @ sign, we add a _csrf token by default. 
+
+
+Custom login page: 
+
+<html xmlns:th="https://www.thymeleaf.org">
+  <head>
+    <title>Please Login</title>
+  </head>
+  <body>
+    <div>
+        <form name="f" th:action="@{/login}" method="post">               
+            <fieldset>
+                <legend>Please Login</legend>
+                <div th:if="${param.error}" class="alert alert-error">    
+                    Invalid username and password.
+                </div>
+                 <div th:if="${param.logout}" class="alert alert-success"> 
+                    You have been logged out. 
+                </div>	
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username"/>        
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password"/>    
+                <div class="form-actions">
+                    <button type="submit" class="btn">Log in</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+  </body>
+</html>
+
+
+Custom logout page: 
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>LOGOUT	</title>
+</head>
+<body>
+LOGOUT PAGE!
+
+ <form th:action="@{/logout}" method="post">
+     <input type="submit" value="Log out"/>
+ </form>
+
+</body>
+</html>
+
+
+ 
+
+
+
+
